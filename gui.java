@@ -17,6 +17,7 @@ public class gui {
     public static JPanel gridPanel = new JPanel(new GridLayout(10, 10));
     public static JButton start = new JButton();
     public static JLabel chatBox = new JLabel();
+    public static JTextField chatEnter = new JTextField();
 
     public gui()
     {
@@ -142,7 +143,6 @@ public class gui {
         chatBox.setVerticalAlignment(SwingConstants.BOTTOM);
         sidePanel.add(chatBox);
 
-        JTextField chatEnter = new JTextField();
         chatEnter.setBounds(0, gridTileS * 9 +20, gridTileS * 5 + 20, gridTileS-20);
         chatEnter.setBorder(border);
         chatEnter.setFont(new Font("Dialog", Font.PLAIN, 12));
@@ -150,7 +150,9 @@ public class gui {
         chatEnter.setOpaque(false);
         chatEnter.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent evt) {
-                //add chat typing
+                game.chatText += "<br>" + gui.chatEnter.getText();
+                game.updateChat();
+                gui.chatEnter.setText("");
             }
         });
         sidePanel.add(chatEnter);

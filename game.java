@@ -30,7 +30,7 @@ public class game {
      * 3 = dead
      */
     public static void main(String args[]) {
-        chatText +="<br>Welcome to STAR WARS BATTLESHIP [BETA]";
+        chatText +="<br>Welcome to Star Wars Battleship [beta]";
         updateChat();
 
         generateEmptyBoard(userBoard);
