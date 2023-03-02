@@ -1,9 +1,0 @@
-X ships cant be dragged out of grid
-/ Bot
-/ fix bad snapping
-/ Add chat typing
-X check for win method
-X fix overlapping
-
-
-- CHANGE TO CHAR ARRAY
