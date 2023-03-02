@@ -2,7 +2,7 @@
 ## About
 Star Wars Battleship is a work in progress attempt to create a Star Wars variant of the board game Battleship in Java Swing. I began this project as an AP Computer Science A assignment, but plan to continue to add on to it.
 ## Images
-<img src="images/screenshot.png" width="700" />
+<img src="images/screenshot.PNG" width="700" />
 ## Features
 - [x] Single Player Battleship against a 'randomly choosing' bot opponent
 - [x] Basic interface
