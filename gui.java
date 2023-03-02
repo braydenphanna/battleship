@@ -87,7 +87,7 @@ public class gui {
                         int count = 0;
                         for (int i = 0; i < game.userBoard.length; i++) {
                             for (int j = 0; j < game.userBoard[0].length; j++) {
-                                if(game.userBoard[i][j] == s.size) count++;
+                                if(game.userBoard[i][j] == s.letter) count++;
                             }
                         }
                         if(count != s.size) {
@@ -157,7 +157,7 @@ public class gui {
 
         layeredPane.add(sidePanel, JLayeredPane.PALETTE_LAYER);
 
-        JLabel space = new JLabel(util.scaleImage(new ImageIcon("space.jpg"), 0.4));
+        JLabel space = new JLabel(util.scaleImage(new ImageIcon("images/space.jpg"), 0.4));
         space.setBounds(0, 0, 1200, 800);
         layeredPane.add(space, JLayeredPane.DEFAULT_LAYER);
 
@@ -171,8 +171,8 @@ public class gui {
     {
         JLabel marker = new JLabel();
         marker.setBounds(y*gridTileS+gridTileS,x*gridTileS+gridTileS, gridTileS, gridTileS);
-        if(!hit)marker.setIcon(new ImageIcon("MarkerWhite.png"));
-        else if(hit)marker.setIcon(new ImageIcon("MarkerRed.png"));
+        if(!hit)marker.setIcon(new ImageIcon("images/MarkerWhite.png"));
+        else if(hit)marker.setIcon(new ImageIcon("images/MarkerRed.png"));
         marker.setOpaque(false);
         markerPanel.add(marker);
         markerPanel.revalidate();

@@ -12,12 +12,12 @@ import javax.swing.event.MouseInputAdapter;
 
 public class game {
 
-    public static int[][] userBoard = new int[10][10];
+    public static char [][] userBoard = new char[10][10];
     public static ship[] ships = new ship[3];
     public static boolean multiplayer = false;
     public static boolean won = false;
     public static boolean userTurn = false;
-    public static int[][] opponentBoard = new int[10][10];
+    public static char[][] opponentBoard = new char[10][10];
     public static int shotX = 0;
     public static int shotY = 0;
     public static String chatText = "";
@@ -33,17 +33,27 @@ public class game {
         chatText +="<br>Welcome to STAR WARS BATTLESHIP [BETA]";
         updateChat();
 
-        ship v = new ship("ventator");
+        generateEmptyBoard(userBoard);
+        generateEmptyBoard(opponentBoard);
+
+        ship v = new ship("Carrier");
         ships[0] = v;
-        ship f = new  ship("frigate");
+        ship f = new  ship("Battleship");
         ships[1] = f;
-        ship y = new  ship("ywing");
+        ship y = new  ship("Destroyer");
         ships[2] = y;
         new gui();
     }
-
-    public static int[][] generateRandomBoard() {
-        int[][] arr = new int[10][10];
+    public static char[][] generateEmptyBoard(char[][] arr) {
+        for (int i = 0; i < arr.length; i++) {
+            for (int j = 0; j < arr[0].length; j++) {
+                arr[i][j] = '-';
+            }
+        }
+        return arr;
+    }
+    public static char[][] generateRandomBoard() {
+        char[][] arr = new char[10][10];
         
         Random random = new Random();
         for (ship s : ships) {
@@ -60,7 +70,7 @@ public class game {
                     }
                 }
                 for (int i = 0; i < s.size; i++) {
-                    arr[x + i][y] = s.size;
+                    arr[x + i][y] = s.letter;
                 }
             } else {
                 int empty = 1;
@@ -75,8 +85,17 @@ public class game {
                     }
                 }
                 for (int i = 0; i < s.size; i++) {
-                    arr[x][y + i] = s.size;
+                    arr[x][y + i] = s.letter;
                 }
+            }
+        }
+        for (int i = 0; i < arr.length; i++) {
+            for (int j = 0; j < arr[0].length; j++) {
+                if(arr[i][j] == 0)
+                {
+                    arr[i][j] = '-';
+                }
+                    
             }
         }
         return arr;
@@ -107,13 +126,13 @@ public class game {
         else {
             int x = 0;
             int y = 0;
-            while(userBoard[y][x]<0){
+            while(userBoard[y][x] == 'h' || userBoard[y][x] == 'm'){
                 x = (int) (Math.random() * 10);
                 y = (int) (Math.random() * 10);
             }
-            if (userBoard[y][x] > 0) {
-                int size = userBoard[y][x];
-                userBoard[y][x] = -2;
+            if (userBoard[y][x] != '-') {
+                char letter = userBoard[y][x];
+                userBoard[y][x] = 'h';
                 generateMarkers(userBoard);
                 gui.fleetDisplay.setText("Your Fleet");
                 gui.shipDragPanel.setVisible(true);
@@ -124,15 +143,15 @@ public class game {
                 int count = 0;
                 for (int i = 0; i < userBoard.length; i++) {
                     for (int j = 0; j < userBoard[0].length; j++) {
-                        if(userBoard[i][j] == size)
+                        if(userBoard[i][j] == letter)
                         {
                             count++;
                         }
                     }
                 }
-                if(size == 5 && count==0) game.chatText += "<br>The enemy has sunk your ventator";
-                else if(size == 4 && count==0) game.chatText += "<br>The enemy has sunk your frigate";
-                else if(size == 3 && count==0) game.chatText += "<br>The enemy has sunk your ywing";
+                if(letter == 'c' && count==0) game.chatText += "<br>The enemy has sunk your Carrier";
+                else if(letter == 'b' && count==0) game.chatText += "<br>The enemy has sunk your Battleship";
+                else if(letter == 'd' && count==0) game.chatText += "<br>The enemy has sunk your Destroyer";
                 game.updateChat();
 
 
@@ -140,19 +159,19 @@ public class game {
                 gameState = 2;
             }
             else{
-                userBoard[y][x] = -1;
+                userBoard[y][x] = 'm';
             }
         }
     }
-    public static void generateMarkers(int[][] arr){
+    public static void generateMarkers(char[][] arr){
         
         gui.markerPanel.removeAll();
         for (int i = 0; i < arr.length; i++) {
             for (int j = 0; j < arr[0].length; j++) {
-                if(arr[i][j]==-1){
+                if(arr[i][j]=='m'){
                     gui.placeMarker(i, j, false);
                 }
-                else if(arr[i][j]==-2){
+                else if(arr[i][j]=='h'){
                     gui.placeMarker(i, j, true);
                 }
             }
@@ -163,10 +182,10 @@ public class game {
     public static void updateChat(){
         gui.chatBox.setText("<html>" + chatText + "</html>");
     }
-    public static boolean checkForWin(int[][] arr){
+    public static boolean checkForWin(char[][] arr){
         for (int i = 0; i < arr.length; i++) {
             for (int j = 0; j < arr[0].length; j++) {
-                if(arr[i][j] > 0)
+                if(arr[i][j] != 'm' && arr[i][j] != 'h' && arr[i][j] != '-')
                     return false;
             }
         }
@@ -196,13 +215,13 @@ class GeneralMouseListener extends MouseInputAdapter {
             game.shotX = (int) (me.getX() / gui.gridTileS);
             game.shotY = (int) (me.getY() / gui.gridTileS);
         }
-        if (game.opponentBoard[game.shotY][game.shotX]  < 0) return;
+        if (game.opponentBoard[game.shotY][game.shotX]  == 'h' || game.opponentBoard[game.shotY][game.shotX]  == 'm') return;
 
-        if (game.opponentBoard[game.shotY][game.shotX]  > 0) {
+        if (game.opponentBoard[game.shotY][game.shotX]  !='h'&&game.opponentBoard[game.shotY][game.shotX]  != 'm'&&game.opponentBoard[game.shotY][game.shotX]  != '-') {
             System.out.println("Hit: " + game.shotY + ", " + game.shotX);
             
             for (ship s : game.ships) {
-                if(s.size == game.opponentBoard[game.shotY][game.shotX]){
+                if(s.letter == game.opponentBoard[game.shotY][game.shotX]){
                     s.health-=1;
                     if(s.health == 0) 
                     {game.chatText += "<br> You have sunk the enemy's " +s.type;
@@ -210,11 +229,11 @@ class GeneralMouseListener extends MouseInputAdapter {
                 }
             }
             
-            game.opponentBoard[game.shotY][game.shotX]  = -2;
+            game.opponentBoard[game.shotY][game.shotX]  =  'h';
            
-        } else if (game.opponentBoard[game.shotY][game.shotX]  == 0) {
+        } else if (game.opponentBoard[game.shotY][game.shotX]  == '-') {
             System.out.println("Miss: " + game.shotY + ", " + game.shotX);
-            game.opponentBoard[game.shotY][game.shotX] = -1;
+            game.opponentBoard[game.shotY][game.shotX] = 'm';
         }
         
         game.generateMarkers(game.opponentBoard);
@@ -226,6 +245,7 @@ class GeneralMouseListener extends MouseInputAdapter {
 
         game.userTurn = false;
         game.getOpponentsTurn();
+        
 
         if(game.checkForWin(game.userBoard)){
             game.chatText += "<br>The enemy is victorious";

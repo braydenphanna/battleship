@@ -21,6 +21,7 @@ public class ship extends JLayeredPane {
     public boolean dropped = false;
     public boolean locked;
     public int health;
+    public char letter;
 
     public ship(String type) {
         this.setLayout(null);
@@ -31,17 +32,20 @@ public class ship extends JLayeredPane {
         locked = false;
         direction = "r";
         switch (type) {
-            case "ventator":
+            case "Carrier":
                 scale = 0.37;
                 size = 5;
+                letter = 'c';
                 break;
-            case "frigate":
+            case "Battleship":
                 scale = 0.62;
                 size = 4;
+                letter = 'b';
                 break;
-            case "ywing":
+            case "Destroyer":
                 scale = 0.40;
                 size = 3;
+                letter = 'd';
                 break;
             default:
                 break;
@@ -49,7 +53,7 @@ public class ship extends JLayeredPane {
         health = size;
         hitbox.setBorder(BorderFactory.createLineBorder(Color.green, 1));
         //this.setBorder(BorderFactory.createLineBorder(Color.magenta, 1));
-        image = util.scaleImage(new ImageIcon(type +"_" + direction + ".png"), scale);
+        image = util.scaleImage(new ImageIcon("images/"+type +"_" + direction + ".png"), scale);
         this.setLocation(600,600);
         this.setSize(gui.gridTileS * (int) Math.round((double) image.getIconWidth() / gui.gridTileS),
         gui.gridTileS * 3);
@@ -91,7 +95,7 @@ public class ship extends JLayeredPane {
 
             hitbox.setLocation((this.getWidth() - hitbox.getWidth()) / 2, (this.getHeight() - hitbox.getHeight()) / 2);
 
-            image = util.scaleImage(new ImageIcon((type + "_" + newDir + ".png")), scale);
+            image = util.scaleImage(new ImageIcon(("images/" +type + "_" + newDir + ".png")), scale);
             ship.setIcon(image);
             ship.setBounds((getWidth() - image.getIconWidth()) / 2, (getHeight() - image.getIconHeight()) / 2,
             image.getIconWidth(), image.getIconHeight());
@@ -159,7 +163,7 @@ class ShipMouseListener extends MouseInputAdapter {
 
         for (int i = 0; i < game.userBoard.length; i++) {
             for (int j = 0; j < game.userBoard[0].length; j++) {
-                if(game.userBoard[i][j] == ((ship) component).size) game.userBoard[i][j] = 0;
+                if(game.userBoard[i][j] == ((ship) component).letter) game.userBoard[i][j] = '-';
             }
 
         }
@@ -172,12 +176,12 @@ class ShipMouseListener extends MouseInputAdapter {
 
             if (s.direction.equals("u") || s.direction.equals("d")) {
                 for (int i = 0; i < s.size; i++) {
-                    game.userBoard[(y + gui.gridTileS * i) / gui.gridTileS][x/ gui.gridTileS] = s.size;
+                    game.userBoard[(y + gui.gridTileS * i) / gui.gridTileS][x/ gui.gridTileS] = s.letter;
                 }
             }
             if (s.direction.equals("r") || s.direction.equals("l")) {
                 for (int i = 0; i < s.size; i++) {
-                    game.userBoard[y / gui.gridTileS][(x + gui.gridTileS * i)/ gui.gridTileS] = s.size;
+                    game.userBoard[y / gui.gridTileS][(x + gui.gridTileS * i)/ gui.gridTileS] = s.letter;
                 }
             }
         }
