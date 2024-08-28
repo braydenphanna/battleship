@@ -1,6 +1,5 @@
 # Battleship
-## About
-Battleship is a work in progress attempt to create a Star Wars variant of the board game Battleship in Java Swing. I began this project as an AP Computer Science A assignment, but plan to continue to add on to it.
+An attempt to create a Star Wars variant of the board game Battleship in Java Swing.
 ## Images
 <img src="images/screenshot.PNG" width="820" />
 
